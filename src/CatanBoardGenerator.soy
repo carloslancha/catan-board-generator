@@ -1,0 +1,54 @@
+{namespace CatanBoardGenerator}
+
+/**
+ * This renders the component's whole content.
+ */
+{template .render}
+	{@param _handleShipSelectedMaterialChange: any}
+	{@param _handleTileSelectedProbabilityChange: any}
+	{@param _handleTileSelectedTypeChange: any}
+	{@param? ships: list<string>}
+	{@param? tiles: ?}
+
+	<div>
+		<div class="logo">
+			<img src="/images/catanlogo.png" />
+		</div>
+
+		<div class="board">
+			<img class="background" src="/images/background.png" />
+
+			{for $rowNumber in range(1,6)}
+				<div class="row">
+					{let $totalTiles: $rowNumber == 1 or $rowNumber == 5 ? 3 : $rowNumber == 2 or $rowNumber == 4 ? 4 : 5 /}
+
+					{for $tileNumber in range(1, $totalTiles + 1)}
+						{call LandTile.render}
+							{param eligible: true /}
+							{param events: [
+								'selectedProbabilityChanged': $_handleTileSelectedProbabilityChange,
+								'selectedTypeChanged': $_handleTileSelectedTypeChange
+							] /}
+							{param id: $rowNumber + '-' + $tileNumber /}
+							{param probability: $tiles[$rowNumber + '-' + $tileNumber] ? $tiles[$rowNumber + '-' + $tileNumber].probability : null /}
+							{param type: $tiles[$rowNumber + '-' + $tileNumber] ? $tiles[$rowNumber + '-' + $tileNumber].type : null /}
+						{/call}
+					{/for}
+				</div>
+			{/for}
+
+			{for $shipNumber in range(0, 9)}
+				{call Ship.render}
+					{param elementClasses: 'ship-' + $shipNumber /}
+					{param events: ['selectedMaterialChanged': $_handleShipSelectedMaterialChange] /}
+					{param id: '' + $shipNumber /}
+					{param material: $ships ? $ships[$shipNumber] : null /}
+				{/call}
+			{/for}
+		</div>
+
+		<div class="name">
+			<textarea placeholder="Board name"></textarea>
+		</div>
+	</div>
+{/template}

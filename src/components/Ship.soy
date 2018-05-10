@@ -1,0 +1,30 @@
+{namespace Ship}
+
+/**
+ *
+ */
+{template .render}
+    {@param? elementClasses: string}
+    {@param? material: string}
+
+    {let $shipClasses kind="text"}
+        ship
+
+        {if $elementClasses}
+            {sp}{$elementClasses}
+        {/if}
+    {/let}
+
+    <div class="{$shipClasses}">
+        <select data-onchange="_handleMaterialChange">
+            <option value="any">3:1</option>
+            <option value="brick">Brick</option>
+            <option value="lumber">Lumber</option>
+            <option value="ore">Ore</option>
+            <option value="sheep">Sheep</option>
+            <option value="wheat">Wheat</option>
+        </select>
+
+        <span class="{$material ?: 'any'}"></span>
+    </div>
+{/template}

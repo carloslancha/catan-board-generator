@@ -1,0 +1,48 @@
+{namespace LandTile}
+
+/**
+ *
+ */
+{template .render}
+    {@param? eligible: bool}
+    {@param? probability: number}
+    {@param? type: string}
+
+    {let $tileAttributes kind="attributes"}
+        class="land-tile
+            {if $type}
+                {sp}{$type}
+            {/if}
+        "
+        
+        {if $probability}
+            prob="{$probability}"
+        {/if}
+    {/let}
+
+    <span {$tileAttributes}>
+        {if $eligible}
+            <div class="selectors">
+                <select data-onchange="_handleTypeChange">
+                    <option value="">None</option>
+                    <option value="desert">Desert</option>
+                    <option value="fields">Fields</option>
+                    <option value="forest">Forest</option>
+                    <option value="hills">Hills</option>
+                    <option value="mountains">Mountains</option>
+                    <option value="pasture">Pasture</option>
+                </select>
+
+                <br/>
+
+                <select data-onchange="_handleProbabilityChange">
+                    <option value="">None</option>
+
+                    {for $index in range(1, 13)}
+                        <option value="{$index}">{$index}</option>
+                    {/for}
+                </select>
+            </div>
+        {/if}
+    </span>
+{/template}
